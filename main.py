@@ -190,7 +190,7 @@ def COOKIE_STATUS():
 #
 #     # 请求不存在的选座页面,随便选择一个座位
 #     # 正常来说预约是post，但是用get一样可以延长cookie寿命
-#     res=requests.get("http://rg.lib.xauat.edu.cn/api.php/spaces/3787/book",headers=headers)
+#     res=requests.get("http://libzw.csu.edu.cn/api.php/spaces/3787/book",headers=headers)
 #
 #     # 将新的cookie写入
 #     cookie_moudle.write_cookies_to_local(res.headers['Set-Cookie'])
@@ -202,7 +202,7 @@ def login_in_1(USERNAME=USERNAME,PASSWORD=PASSWORD):
     多用来登录获取cookie，当登录失败时会调用钉钉进行通知
     """
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-    res = post(url="http://rg.lib.xauat.edu.cn/api.php/login",
+    res = post(url="libzw.csu.edu.cn/api.php/login",
                    headers={"Referer": "http://www.skalibrary.com/",
                             "User-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 Edg/99.0.4844.74"},
                    data={"username": USERNAME, "password": PASSWORD, "from": "mobile"})
@@ -228,7 +228,7 @@ def login_in_2(USERNAME=USERNAME,PASSWORD=PASSWORD):
     多用来检查账号的密码的可用性，0-不可用，1-可用，
     """
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-    res = post(url="http://rg.lib.xauat.edu.cn/api.php/login",
+    res = post(url="libzw.csu.edu.cn/api.php/login",
                    headers={"Referer": "http://www.skalibrary.com/",
                             "User-agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_1 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Version/10.0 Mobile/14E304 Safari/602.1 Edg/99.0.4844.74"},
                    data={"username": USERNAME, "password": PASSWORD, "from": "mobile"})
@@ -279,7 +279,7 @@ def get_area_id():
     :return 0-失败，1-成功
     """
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-    res = get(url="http://rg.lib.xauat.edu.cn/api.php/areas?tree=1",headers={"Referer": "http://www.skalibrary.com/"})
+    res = get(url="libzw.csu.edu.cn/api.php/areas?tree=1",headers={"Referer": "http://www.skalibrary.com/"})
     if json.loads(res.content)['status']:
         # 第一层-图书馆信息（可能是两个图书馆），第二层-楼层信息，第三层-空间信息
         for library_info in json.loads(res.content)['data']['list']:
@@ -315,7 +315,7 @@ def url_info():
     print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
     for area_id in AREA_ID:
         res = get(
-            url=f"http://rg.lib.xauat.edu.cn/api.php/space_time_buckets?area={area_id}&day={datetime.date.today()}",
+            url=f"http://libzw.csu.edu.cn/api.php/space_time_buckets?area={area_id}&day={datetime.date.today()}",
             headers={"Referer": "http://www.skalibrary.com/"})
         if json.loads(res.content)['status']:
             #  spaceId代表这一房间的id，永远不变，SEGMENT=id=bookTimeId，每个房间每天都不一样，含房间和时间信息
@@ -324,7 +324,7 @@ def url_info():
             endTime = json.loads(res.content)['data']['list'][0]['endTime']
             day = json.loads(res.content)['data']['list'][0]['day']
             startTime = json.loads(res.content)['data']['list'][0]['startTime']
-            seat_info_url=f"http://rg.lib.xauat.edu.cn/api.php/spaces_old?area={area_id}&day={day}&endTime={endTime}&segment={id}&startTime={startTime}"
+            seat_info_url=f"libzw.csu.edu.cn/api.php/spaces_old?area={area_id}&day={day}&endTime={endTime}&segment={id}&startTime={startTime}"
             SEGMENT.append(id)
             SEAT_INFO_URL.append(seat_info_url)
             print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
